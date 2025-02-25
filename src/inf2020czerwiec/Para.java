@@ -13,10 +13,29 @@ public class Para implements Comparable<Para> {
         if (liczba % 2 == 0) {
             skladnikPierwszy = znajdzSkladniki();
         }
-        znajdzNajdluzszyFragment();
+//        znajdzNajdluzszyFragment();
+        znajdzNajdluzszyFragmentPoprawa();
     }
 
-    private void znajdzNajdluzszyFragment() {//TODO jeden ciag wychodzi pusty
+    private void znajdzNajdluzszyFragmentPoprawa() {
+        String max = slowo.charAt(0) + "";
+        int indexPoczatku = 0;
+
+        for (int i = 1; i < slowo.length(); i++) {
+            if (slowo.charAt(i-1) == slowo.charAt(i)) continue;
+            String obecnyCiag = slowo.substring(indexPoczatku, i);
+            if (obecnyCiag.length() > max.length())
+                max = obecnyCiag;
+            indexPoczatku = i;
+        }
+        String obecnyCiag = slowo.substring(indexPoczatku);
+        if (obecnyCiag.length() > max.length())
+            max = obecnyCiag;
+
+        najdluzszyFragment = max;
+    }
+
+    private void znajdzNajdluzszyFragment() {
         int indexPoczatku = 0;
         for (int i = 1; i < slowo.length(); i++) {
             if (slowo.charAt(i-1) != slowo.charAt(i)){
@@ -33,6 +52,7 @@ public class Para implements Comparable<Para> {
                 }
             }
         }
+        if (slowo.length() == 1) najdluzszyFragment = slowo;
     }
 
     private int znajdzSkladniki() {

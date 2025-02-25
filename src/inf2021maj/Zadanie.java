@@ -21,7 +21,7 @@ public class Zadanie {
         znajdzNajczesciejDopisywana();
     }
 
-    private void znajdzNajczesciejDopisywana(){ //TODO omówić i prostsza wersja? + Collectors
+    private void znajdzNajczesciejDopisywana(){
         Character najpopularniejsza = instrukcje.stream()
                 .filter(instrukcja -> instrukcja.polecenie.equals(Polecenie.DOPISZ))
                 .map(a -> a.litera)

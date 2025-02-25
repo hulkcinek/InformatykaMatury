@@ -40,7 +40,7 @@ public class Zadanie {
     private void odczytaj() {
         Scanner s;
         try {
-            s = new Scanner(new File("Dane_PR2/pary.txt"));
+            s = new Scanner(new File("src/Dane/dane2020czerwiec/pary.txt"));
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
