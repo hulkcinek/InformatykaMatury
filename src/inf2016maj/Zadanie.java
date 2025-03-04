@@ -31,7 +31,6 @@ public class Zadanie {
         return Math.abs(Math.PI - pi);
     }
 
-    @SuppressWarnings("UnnecessaryLocalVariable")
     private double policzPrzyblizeniaPi(int dokladnosc) {
         List<Punkt> subList = punkty.subList(0, dokladnosc);
         Map<Polozenie, Long> mapa = policzPolozenia(subList);
@@ -43,6 +42,7 @@ public class Zadanie {
         if (mapa.containsKey(Polozenie.NA_KOLE))
             nalezaceDoKola +=  policzPolozenia(subList).get(Polozenie.NA_KOLE);
 
+        //noinspection UnnecessaryLocalVariable
         double przyblizenie = 4.0 * nalezaceDoKola / dokladnosc;
 //        System.out.println("PI dla pierwszych " + dokladnosc + " elementow wynosi:" + przyblizenie);
         return przyblizenie;
