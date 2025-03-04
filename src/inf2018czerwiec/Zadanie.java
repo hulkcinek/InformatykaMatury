@@ -22,7 +22,7 @@ public class Zadanie {
         dodajCiagiDoSiebie();
     }
 
-    private void dodajCiagiDoSiebie() { //TODO czy moze to byc zrobione bez scalania?? + wypisanie w konwencji jak w odpowiedziach + zapisanie do pliku
+    private void dodajCiagiDoSiebie() {
         IntStream.range(0, ciagi1.size())
                 .mapToObj(i -> {
                     List<Integer> ciag = new ArrayList<>(ciagi1.get(i));
@@ -30,6 +30,8 @@ public class Zadanie {
                     ciag.sort(Integer::compareTo);
                     return ciag;
                 })
+                .map(list -> list.stream().map(String::valueOf).toList())
+                .map(list -> String.join(" ", list))
                 .forEach(System.out::println);
     }
 

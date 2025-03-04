@@ -6,9 +6,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+
 
 public class Zadanie {
 
@@ -19,6 +21,35 @@ public class Zadanie {
         wykonajPolecenia();
         znajdzNajdluzszyCiag();
         znajdzNajczesciejDopisywana();
+
+
+        Map<Polecenie, List<Instrukcja>> collect = instrukcje.stream()
+                .collect(Collectors.groupingBy(instrukcja -> instrukcja.polecenie)); // lista instrukcji dla danego polecenia
+
+        Map<Polecenie, Character> collect1 = instrukcje.stream()
+                .collect(Collectors.toMap(instrukcja -> instrukcja.polecenie, instrukcja -> instrukcja.litera, (litera1, litera2) -> litera2)); // ostatnia litera dla danego polecenia
+
+        Map<Polecenie, List<Character>> collect2 = instrukcje.stream()
+                .collect(Collectors.groupingBy(instrukcja -> instrukcja.polecenie, Collectors.mapping(instrukcja -> instrukcja.litera, Collectors.toList())));
+
+        List<String> macierz = List.of(
+                "abcd",
+                "ghyf",
+                "gyrge"
+        );
+
+        List<Character> list = macierz.stream()
+                .flatMap(wiersz -> wiersz.chars().boxed())
+                .map(i -> (char) i.intValue())
+                .toList();
+
+        int suma = macierz.stream()
+                .flatMapToInt(String::chars)
+                .reduce(Integer::sum)
+                .orElse(-1);
+
+        System.out.println();
+
     }
 
     private void znajdzNajczesciejDopisywana(){
@@ -104,7 +135,7 @@ public class Zadanie {
     private void odczytaj() {
         Scanner s;
         try {
-            s = new Scanner(new File("DANE_2105/instrukcje.txt"));
+            s = new Scanner(new File("src/Dane/dane2021maj/instrukcje.txt"));
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
