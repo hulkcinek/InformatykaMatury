@@ -122,7 +122,7 @@ public class Zadanie {
     private void odczytaj() {
         Scanner s;
         try {
-            s = new Scanner(new File("DANE/DANE_M/anagram.txt"));
+            s = new Scanner(new File("src/Dane/dane2023czerwiec/anagram.txt"));
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }

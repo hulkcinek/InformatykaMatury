@@ -64,7 +64,7 @@ public class Zadanie {
     private void odczytaj() {
         Scanner s;
         try {
-            s = new Scanner(new File("Dane_2305/pi.txt"));
+            s = new Scanner(new File("src/Dane/dane2023maj/pi.txt"));
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
