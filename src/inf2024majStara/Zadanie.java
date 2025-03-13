@@ -1,22 +1,55 @@
 package inf2024majStara;
 
+import inf2016maj.Polozenie;
+
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class Zadanie {
 
     char[][] plansza;
+    Set<Statek> statki = new HashSet<>();
 
     public void start() {
         odczytaj();
-        znajdzMozliweMiejscaNaJednomasztowce();
+        uzupelnijStatki();
+
+        policzDwumasztowce2();
+        /*znajdzMozliweMiejscaNaJednomasztowce();
         policzSymetryczne();
         policzDwumasztowce();
-        policzStatkiNaPrzekatnych();
+        policzStatkiNaPrzekatnych();*/
+    }
+
+    private void policzDwumasztowce2() {
+        long wynik = statki.stream()
+                .filter(statek -> statek.typ == Statek.Typ.DWUMASZTOWIEC)
+                .count();
+        System.out.println(wynik);//TODO reszta zadan na secie statkow
+    }
+
+    private void uzupelnijStatki() {
+        int[] dY = {0, 0, -1, 1};
+        int[] dX = {-1, 1, 0, 0};
+        for (int y = 0; y < plansza.length; y++) {
+            for (int x = 0; x < plansza[0].length; x++) {
+                if (plansza[y][x] == '0') continue;
+
+                Statek statek = null;
+                for (int i = 0; i < 4; i++) {
+                    int nextY = y + dY[i];
+                    int nextX = x + dX[i];
+                    if (isValid(nextY, nextX) && plansza[nextY][nextX] == '1'){
+                        statek = new Statek(new Punkt(y, x), new Punkt(nextY, nextX));
+                    }
+                }
+                if (statek == null)
+                    statek = new Statek(new Punkt(y, x));
+
+                statki.add(statek);
+            }
+        }
     }
 
     private void policzStatkiNaPrzekatnych() {

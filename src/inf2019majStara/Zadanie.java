@@ -33,7 +33,7 @@ public class Zadanie {
         List<Punkt> przeszkody = new ArrayList<>();
         for (int y = 0; y < dzialka.length; y++) {
             for (int x = 0; x < dzialka[0].length; x++) {
-                if (dzialka[y][x] == Elementy.PRZESZKODA.znak)
+                if (dzialka[y][x] == Element.PRZESZKODA.znak)
                     przeszkody.add(new Punkt(y, x));
             }
         }
@@ -70,7 +70,8 @@ public class Zadanie {
                     int iloscTrawy = 0;
                     for (int i = 0; i < dzialka.length; i++) {
                         for (int j = 0; j < dzialka[0].length; j++) {
-                            if (dzialka[i][j] == Elementy.TRAWA.znak)
+                            Element obecny = Element.of(dzialka[i][j]);
+                            if (Element.TRAWA.equals(obecny))
                                 iloscTrawy++;
                         }
                     }
@@ -100,14 +101,21 @@ public class Zadanie {
         }
     }
 
-    enum Elementy{
+    enum Element {
         TRAWA('*'),
         PRZESZKODA('X'),
         PUSTE('.');
         final char znak;
 
-        Elementy(char znak) {
+        Element(char znak) {
             this.znak = znak;
+        }
+
+        public static Element of(char c){
+            for (Element e : Element.values()){
+                if (e.znak == c) return e;
+            }
+            return null;
         }
     }
 }
