@@ -1,32 +1,66 @@
 package inf2024majStara;
 
-import inf2016maj.Polozenie;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Zadanie {
 
     char[][] plansza;
+    int width;
     Set<Statek> statki = new HashSet<>();
 
     public void start() {
         odczytaj();
+        width = plansza[0].length;
         uzupelnijStatki();
 
+        policzSymetryczne2();
         policzDwumasztowce2();
+        policzStatkiNaPrzekatnych2();
+
         /*znajdzMozliweMiejscaNaJednomasztowce();
         policzSymetryczne();
         policzDwumasztowce();
         policzStatkiNaPrzekatnych();*/
     }
 
+    private void policzStatkiNaPrzekatnych2() {
+        Map<Typ, Long> mapa = statki.stream()
+                .filter(statek -> statek.getPunkty().stream()
+                        .anyMatch(p -> p.isOnADiagonal(width)))
+                .collect(Collectors.groupingBy(Statek::getTyp, Collectors.counting()));
+
+        System.out.println("Jednomasztowce: " + mapa.get(Typ.JEDNOMASZTOWIEC));
+        System.out.println("Dwumasztowce: " + mapa.get(Typ.DWUMASZTOWIEC));
+    }
+
+    private void policzSymetryczne2() {
+        int wynik = 0;
+        for (Statek statek : statki){
+            Punkt szukany = statek.punkty.stream()
+                    .findFirst().orElse(new Punkt(0, 0))
+                    .getReversed();
+
+            if (szukany.isOnADiagonal(plansza[0].length)) continue;
+
+            if(statki.stream()
+                    .filter(s -> s.getTyp() == Typ.JEDNOMASZTOWIEC)
+                    .map(Statek::getPunkty)
+                    .anyMatch(s -> s.contains(szukany))
+            )
+                wynik++;
+        }
+        wynik /= 2;
+        System.out.println(wynik);
+    }
+
     private void policzDwumasztowce2() {
         long wynik = statki.stream()
-                .filter(statek -> statek.typ == Statek.Typ.DWUMASZTOWIEC)
+                .filter(statek -> statek.typ == Typ.DWUMASZTOWIEC)
                 .count();
-        System.out.println(wynik);//TODO reszta zadan na secie statkow
+        System.out.println(wynik);
     }
 
     private void uzupelnijStatki() {

@@ -23,6 +23,16 @@ public class Punkt {
         return Objects.hash(y, x);
     }
 
+    public boolean isOnADiagonal(int width){
+        if (x == y) return true;
+        if (x + y == width - 1) return true;
+        return false;
+    }
+
+    public Punkt getReversed(){
+        return new Punkt(x, y);
+    }
+
     public int getY() {
         return y;
     }

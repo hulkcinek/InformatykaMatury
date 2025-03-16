@@ -14,23 +14,12 @@ public class Statek {
         typ = Typ.of(this.punkty.size());
     }
 
-    enum Typ{
-        JEDNOMASZTOWIEC(1),
-        DWUMASZTOWIEC(2);
+    public Set<Punkt> getPunkty() {
+        return punkty;
+    }
 
-        final int iloscMasztow;
-
-        Typ(int i) {
-            iloscMasztow = i;
-        }
-
-        public static Typ of(int i){
-            for (Typ value : Typ.values()) {
-                if (value.iloscMasztow == i)
-                    return value;
-            }
-            return null;
-        }
+    public Typ getTyp() {
+        return typ;
     }
 
     @Override
