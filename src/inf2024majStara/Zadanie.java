@@ -38,20 +38,47 @@ public class Zadanie {
 
     private void policzSymetryczne2() {
         int wynik = 0;
-        for (Statek statek : statki){
+
+        wynik = statki.stream()
+                .filter(statek -> statek.getTyp().equals(Typ.JEDNOMASZTOWIEC))
+                .mapToInt(statek -> {
+
+                    Punkt szukany = statek.punkty.stream().findFirst().orElseThrow().getReversed();
+
+                    if (szukany.isOnADiagonal(plansza[0].length))
+                        return 0;
+
+                    boolean istniejePasujacy = statki.stream()
+                            .filter(s -> s.getTyp() == Typ.JEDNOMASZTOWIEC)
+                            .map(Statek::getPunkty)
+                            .anyMatch(s -> s.contains(szukany));
+
+                    if(istniejePasujacy) {
+                        return 1;
+                    }
+                    return 0;
+                })
+                .sum();
+
+
+
+        /*for (Statek statek : statki){
+            if (statek.getTyp() == Typ.DWUMASZTOWIEC) continue;
             Punkt szukany = statek.punkty.stream()
                     .findFirst().orElse(new Punkt(0, 0))
                     .getReversed();
 
             if (szukany.isOnADiagonal(plansza[0].length)) continue;
 
-            if(statki.stream()
+            boolean istniejePasujacy = statki.stream()
                     .filter(s -> s.getTyp() == Typ.JEDNOMASZTOWIEC)
                     .map(Statek::getPunkty)
-                    .anyMatch(s -> s.contains(szukany))
-            )
+                    .anyMatch(s -> s.contains(szukany);
+
+            if(istniejePasujacy) {
                 wynik++;
-        }
+            }
+        }*/
         wynik /= 2;
         System.out.println(wynik);
     }

@@ -23,6 +23,7 @@ public class Zadanie {
         for (int i = 0; i < generacje.size(); i++) {
             ilosciZywych.add(zliczZyweWPokoleniu(i));
         }
+
         for (int i = 0; i < ilosciZywych.size(); i++) {
             if (ilosciZywych.subList(i, ilosciZywych.size()).stream()
                     .distinct()
