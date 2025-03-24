@@ -13,31 +13,46 @@ public class Zadanie3 {
 
     public void start() {
         odczytaj();
-        znajdzNajkrotszePrzedzialy();
-        znajdzNajczestszaDlugosc();
+//        znajdzNajkrotszePrzedzialy();
+//        znajdzNajczestszaDlugosc();
+
+        uzupelnijZawarte();
         znajdzNajdluzszyLancuch();
     }
 
-    private void znajdzNajdluzszyLancuch() {
-        int maxDlugosc = szukaj(0, new ArrayList<>());
-        System.out.println(maxDlugosc);
-    }
-
-    private int szukaj(int obecnaDlugosc, ArrayList<Przedzial> uzyte) {
-        List<Integer> dlugosci = new ArrayList<>();
-        for (Przedzial przedzial : przedzialy) {
-            if (uzyte.contains(przedzial)) continue;
-            
-            if (uzyte.isEmpty() || uzyte.getLast().czyZawiera(przedzial)) {
-                uzyte.add(przedzial);
-                dlugosci.add(szukaj(obecnaDlugosc + 1, uzyte));
-                uzyte.removeLast();
+    private void uzupelnijZawarte() {
+        for (Przedzial p1 : przedzialy){
+            for (Przedzial p2 : przedzialy) {
+                if (p1.equals(p2)) continue;
+                if (p1.zawiera(p2)){
+                    p1.zawarte.add(p2);
+                }
             }
         }
-        return dlugosci.stream()
-                .max(Integer::compareTo)
-                .orElse(-1);
     }
+
+    private void znajdzNajdluzszyLancuch() {
+        List<Integer> glebokosci = new ArrayList<>();
+        for (Przedzial p : przedzialy){
+            glebokosci.add(wyszukaj(p,0));
+        }
+        System.out.println(glebokosci.stream()
+                .max(Integer::compareTo)
+                .orElse(-1));
+    }
+
+    private int wyszukaj(Przedzial p, int glebokosc) {
+        List<Integer> glebokosci = new ArrayList<>();
+        System.out.println("Sprawdzanie dla: " + p +  " glebokosc: " + glebokosc);
+        for (Przedzial zawarty : p.zawarte){
+            System.out.println(zawarty);
+            glebokosci.add(wyszukaj(zawarty, glebokosc + 1));
+        }
+        return glebokosci.stream()
+                .max(Integer::compareTo)
+                .orElse(glebokosc);
+    }
+
 
     private void znajdzNajczestszaDlugosc() {
         Map<Integer, Long> mapa = przedzialy.stream()
@@ -104,6 +119,8 @@ class Przedzial{
     private final int poczatek;
     private final int koniec;
 
+    List<Przedzial> zawarte = new ArrayList<>();
+
     public Przedzial(int poczatek, int koniec) {
         this.poczatek = poczatek;
         this.koniec = koniec;
@@ -121,8 +138,8 @@ class Przedzial{
         return koniec - poczatek + 1;
     }
 
-    public boolean czyZawiera(Przedzial p){
-        return p.getPoczatek() <= poczatek && koniec <= p.getKoniec();
+    public boolean zawiera(Przedzial p){
+        return p.getPoczatek() >= poczatek && koniec >= p.getKoniec();
     }
 
     @Override
