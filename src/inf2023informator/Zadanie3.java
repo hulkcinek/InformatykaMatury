@@ -13,8 +13,8 @@ public class Zadanie3 {
 
     public void start() {
         odczytaj();
-//        znajdzNajkrotszePrzedzialy();
-//        znajdzNajczestszaDlugosc();
+        znajdzNajkrotszePrzedzialy();
+        znajdzNajczestszaDlugosc();
 
         uzupelnijZawarte();
         znajdzNajdluzszyLancuch();
@@ -32,16 +32,32 @@ public class Zadanie3 {
     }
 
     private void znajdzNajdluzszyLancuch() {
-        List<Integer> glebokosci = new ArrayList<>();
-        for (Przedzial p : przedzialy){
-            glebokosci.add(wyszukaj(p,0));
+        int maxDlugosc = 0;
+        for (Przedzial p : przedzialy) {
+            maxDlugosc = Math.max(maxDlugosc, wyszukaj(p));
         }
-        System.out.println(glebokosci.stream()
-                .max(Integer::compareTo)
-                .orElse(-1));
+        System.out.println(maxDlugosc);
     }
 
-    private int wyszukaj(Przedzial p, int glebokosc) {
+    private Map<Przedzial, Integer> pamiec = new HashMap<>();
+
+    private int wyszukaj(Przedzial p) {
+        if (pamiec.containsKey(p)) {
+            return pamiec.get(p);
+        }
+
+        int maxDlugosc = 1;
+        for (Przedzial zawarty : p.zawarte) {
+            int dlugosc = 1 + wyszukaj(zawarty);
+            if (dlugosc > maxDlugosc) {
+                maxDlugosc = dlugosc;
+            }
+        }
+        pamiec.put(p, maxDlugosc);
+        return maxDlugosc;
+    }
+
+    /*private int wyszukaj(Przedzial p, int glebokosc) {
         List<Integer> glebokosci = new ArrayList<>();
         System.out.println("Sprawdzanie dla: " + p +  " glebokosc: " + glebokosc);
         for (Przedzial zawarty : p.zawarte){
@@ -51,7 +67,7 @@ public class Zadanie3 {
         return glebokosci.stream()
                 .max(Integer::compareTo)
                 .orElse(glebokosc);
-    }
+    }*/
 
 
     private void znajdzNajczestszaDlugosc() {

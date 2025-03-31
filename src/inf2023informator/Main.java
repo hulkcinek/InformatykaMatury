@@ -1,5 +1,6 @@
 package inf2023informator;
 
+import java.math.BigInteger;
 import java.util.Arrays;
 
 public class Main {
